@@ -8,13 +8,15 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title_textview"
         android:text="@string/hello_blank_fragment"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:gravity="center"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/background_light" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -41,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/releaseyear_textview"
                 android:layout_gravity="center" />
 
@@ -49,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/runtime_textview"
                 android:layout_gravity="center" />
 
@@ -57,26 +57,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/rating_textview"
                 android:layout_gravity="center" />
 
-            <TextView
+            <CheckBox
+                android:text="@string/checkbox_favorite_text"
                 android:layout_width="wrap_content"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Favorite"
-                android:id="@+id/favorite_textview"
-                android:layout_gravity="center" />
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="3dp"
+                android:id="@+id/checkbox_favorite" />
+
         </LinearLayout>
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/synopsis_textview" />
+        android:id="@+id/overview_textview"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:orientation="horizontal"

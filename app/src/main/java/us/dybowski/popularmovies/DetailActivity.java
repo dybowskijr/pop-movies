@@ -36,7 +36,8 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
             // using a fragment transaction.
 
             Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
+            arguments.putLong("MOVIEID", getIntent().getLongExtra("MOVIEID", 0L));
+            //arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);

@@ -33,7 +33,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         // These are the names of the JSON objects that need to be extracted.
         final String MDB_RESULTS = "results";
         final String MDB_POSTER_PATH = "poster_path";
-        final String MDB_ID = "id";
+        final String MDB_MOVIE_ID = "id";
 
 
         ArrayList<Movie> movieList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
             JSONObject movieJson = movieArray.getJSONObject(i);
             Log.i(LOG_TAG, movieJson.getString("title"));
-            movieList.add(new Movie(movieJson.getString(MDB_ID), movieJson.getString(MDB_POSTER_PATH)));
+            movieList.add(new Movie(movieJson.getString(MDB_MOVIE_ID), movieJson.getString(MDB_POSTER_PATH)));
         }
         return movieList;
     }

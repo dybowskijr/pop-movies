@@ -3,11 +3,8 @@ package us.dybowski.popularmovies;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,49 +14,63 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
-public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
+import us.dybowski.popularmovies.BuildConfig;
+import us.dybowski.popularmovies.DetailFragment;
+import us.dybowski.popularmovies.FetchMovieTask;
+import us.dybowski.popularmovies.Movie;
+import us.dybowski.popularmovies.Review;
+import us.dybowski.popularmovies.ReviewAdapter;
 
-    private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
+
+public class FetchReviewsTask extends AsyncTask<Long, Void, ArrayList<Review>> {
+
+    private final String LOG_TAG = FetchReviewsTask.class.getSimpleName();
     private DetailFragment mDetailFragment;
 
-    public FetchMovieTask(DetailFragment df) {
-        mDetailFragment = df;
+
+    public FetchReviewsTask(DetailFragment fragment) {
+       mDetailFragment = fragment;
     }
 
-    private Movie getMovieFromJson(String forecastJsonStr)
+
+    private ArrayList<Review> getReviewsFromJson(String forecastJsonStr)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
-        final String MDB_RUNTIME = "runtime";
-        final String MDB_RELEASE_DATE = "release_date";
-        final String MDB_OVERVIEW = "overview";
-        final String MDB_VOTE_AVERAGE = "vote_average";
-        final String MDB_TITLE = "title";
-        final String MDB_ID = "id";
-        final String MDB_POSTER_PATH = "poster_path";
+        final String MDB_RESULTS = "results";
+        final String MDB_AUTHOR = "author";
+        final String MDB_CONTENT = "content";
 
-        JSONObject movieJson = new JSONObject(forecastJsonStr);
+        ArrayList<Review> reviewList = new ArrayList<>();
 
-        return new Movie(
-                movieJson.getString(MDB_ID),
-                movieJson.getString(MDB_VOTE_AVERAGE),
-                movieJson.getString(MDB_OVERVIEW),
-                movieJson.getString(MDB_POSTER_PATH),
-                movieJson.getString(MDB_RELEASE_DATE),
-                movieJson.getString(MDB_RUNTIME),
-                movieJson.getString(MDB_TITLE)
-        );
+        JSONObject reviewsJson = new JSONObject(forecastJsonStr);
+        JSONArray reviewJsonArray = reviewsJson.getJSONArray(MDB_RESULTS);
+
+        for (int i = 0; i < reviewJsonArray.length(); i++) {
+
+            JSONObject reviewJson = reviewJsonArray.getJSONObject(i);
+            Log.i(LOG_TAG, reviewJson.getString(MDB_AUTHOR));
+            Log.i(LOG_TAG, reviewJson.getString(MDB_CONTENT));
+            reviewList.add(new Review(reviewJson.getString(MDB_AUTHOR),reviewJson.getString(MDB_CONTENT)));
+        }
+        return reviewList;
     }
 
-
+    /**
+     *
+     * @param params first parameter will be the sort_by value (vote_average.desc, popularity.desc)
+     * @return
+     */
     @Override
-    protected Movie doInBackground(Long... params) {
+    protected ArrayList<Review> doInBackground(Long... params) {
+        final String THE_MOVIE_DB_REVIEWS_BASE_PATH = "https://api.themoviedb.org/3/movie";
 
         final String API_KEY_VALUE = BuildConfig.THE_MOVIE_DB_API_KEY;
         final String API_KEY_KEY = "api_key";
+        final String API_REVIEWS_PATH = "reviews";
 
-        // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
             return null;
         }
@@ -70,20 +81,15 @@ public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String moviesJsonString = null;
+        String reviewsJsonString = null;
 
         String format = "json";
 
-
         try {
-
-            final String MDB_BASE_URL = "http://api.themoviedb.org/3/movie";
-            final String MDB_KEY_VALUE = BuildConfig.THE_MOVIE_DB_API_KEY;
-            final String MDB_API_KEY = "api_key";
-
-            Uri builtUri = Uri.parse(MDB_BASE_URL).buildUpon()
-                    .appendPath(params[0].toString())
-                    .appendQueryParameter(MDB_API_KEY, MDB_KEY_VALUE)
+            Uri builtUri = Uri.parse(THE_MOVIE_DB_REVIEWS_BASE_PATH).buildUpon()
+                    .appendPath(Long.toString(params[0]))
+                    .appendPath(API_REVIEWS_PATH)
+                    .appendQueryParameter(API_KEY_KEY, API_KEY_VALUE)
                     .build();
 
             URL url = new URL(builtUri.toString());
@@ -115,7 +121,7 @@ public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
                 // Stream was empty.  No point in parsing.
                 return null;
             }
-            moviesJsonString = buffer.toString();
+            reviewsJsonString = buffer.toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
@@ -135,7 +141,7 @@ public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
         }
 
         try {
-            return getMovieFromJson(moviesJsonString);
+            return getReviewsFromJson(reviewsJsonString);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
@@ -145,16 +151,10 @@ public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
         return null;
     }
 
-    protected void onPostExecute(Movie movie) {
-        if (movie != null) {
-            mDetailFragment.mRuntimeTextView.setText(movie.getRuntime() + " min");
-            mDetailFragment.mReleaseYearTextView.setText(movie.getReleaseDate());
-            mDetailFragment.mTitleTextView.setText(movie.getTitle());
-            mDetailFragment.mOverview.setText(movie.getOverview());
-
-            Uri imageUri = Uri.parse(BuildConfig.THE_MOVIE_DB_IMAGE_BASE_PATH).buildUpon().appendEncodedPath(movie.getPosterPath()).build();
-            Picasso.with(mDetailFragment.getContext()).load(imageUri).into(mDetailFragment.mPosterImageView);
-
+    protected void onPostExecute(ArrayList<Review> result) {
+        mDetailFragment.mReviewAdapter.clear();
+        if (result != null) {
+            mDetailFragment.mReviewAdapter.addAll(result);
         }
     }
 }

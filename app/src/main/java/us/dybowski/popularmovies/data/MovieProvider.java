@@ -91,10 +91,7 @@ public class MovieProvider extends ContentProvider {
         return matcher;
     }
 
-    /*
-        Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
-        here.
-     */
+
     @Override
     public boolean onCreate() {
         movieDbHelper = new MovieDbHelper(getContext());

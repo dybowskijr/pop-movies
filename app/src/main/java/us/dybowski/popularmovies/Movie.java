@@ -4,24 +4,25 @@ package us.dybowski.popularmovies;
  * Created by DD8312 on 8/28/2016.
  */
 public class Movie {
-    private String id;
+    private long movieId;
     private String posterPath;
     private String releaseDate;
     private String runtime;
     private String title;
     private String voteAverage;
     private String overview;
+    private long _id;
 
-    Movie(String id, String posterPath) {
-        setId(id);
+    Movie(String movieId, String posterPath) {
+        setMovieId(movieId);
         setPosterPath(posterPath);
 
     }
 
-    public Movie(String id, String voteAverage, String overview, String posterPath,
+    public Movie(String movieId, String voteAverage, String overview, String posterPath,
                  String releaseDate, String runtime, String title) {
         this.voteAverage = voteAverage;
-        this.id = id;
+        setMovieId(movieId);
         this.overview = overview;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
@@ -37,12 +38,17 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public String getId() {
-        return id;
+    public long getMovieId() {
+        return movieId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMovieId(String movieId) {
+        try {
+            this.movieId = Long.parseLong(movieId);
+        }
+        catch (Exception e) {
+            this.movieId = 0L;
+        }
     }
 
     public String getOverview() {

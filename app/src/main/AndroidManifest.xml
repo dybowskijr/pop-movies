@@ -19,13 +19,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="us.dybowski.popularmovies.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="us.dybowski.popularmovies.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="us.dybowski.popularmovies.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="us.dybowski.popularmovies.MainActivity" />
         </activity>
+        <provider
+            android:authorities="us.dybowski.popularmovies"
+            android:name=".data.MovieProvider" />
     </application>
 
 </manifest>

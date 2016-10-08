@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     GridView movieGridView;
     private int mPosition = ListView.INVALID_POSITION;
 
-    private static List<Movie> dummyList = new ArrayList<Movie>();
+    private static List<Movie> dummyList = new ArrayList<>();
 
     public MainActivityFragment() {
     }
@@ -54,7 +55,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     static final int COL_RUNTIME = 0;
     static final int COL_VOTE_AVERAGE = 0;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -68,18 +68,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // CursorAdapter returns a cursor at the correct position for getItem(), or null
-                // if it cannot seek to that position.
 
                 //Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (true) {
+                    Movie m = (Movie)adapterView.getItemAtPosition(position);
+                    Log.i("POSITION", Integer.toString(position));
+                    Log.i("MOVIEID", Long.toString(m.getMovieId()));
                     ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieWithIdUri(2));
+                            .onItemSelected(m.getMovieId());
                 }
                 mPosition = position;
             }
         });
-
 
         //get movie list using preference (highest_rated or most_popular
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -131,7 +131,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri movieWithIdUri);
+        void onItemSelected(long l);
     }
 }
 
