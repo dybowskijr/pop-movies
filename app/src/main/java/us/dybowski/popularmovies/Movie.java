@@ -4,7 +4,7 @@ package us.dybowski.popularmovies;
  * Created by DD8312 on 8/28/2016.
  */
 public class Movie {
-    private long movieId;
+    private String movieId;
     private String posterPath;
     private String releaseDate;
     private String runtime;
@@ -38,17 +38,13 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public long getMovieId() {
+    public String getMovieId() {
         return movieId;
     }
 
     public void setMovieId(String movieId) {
-        try {
-            this.movieId = Long.parseLong(movieId);
-        }
-        catch (Exception e) {
-            this.movieId = 0L;
-        }
+
+            this.movieId = movieId;
     }
 
     public String getOverview() {

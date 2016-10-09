@@ -25,7 +25,7 @@ import us.dybowski.popularmovies.data.MovieContract;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivityFragment extends Fragment {
 
     UriImageAdapter mUriImageAdapter;
     GridView movieGridView;
@@ -73,9 +73,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 if (true) {
                     Movie m = (Movie)adapterView.getItemAtPosition(position);
                     Log.i("POSITION", Integer.toString(position));
-                    Log.i("MOVIEID", Long.toString(m.getMovieId()));
+                    Log.i("MOVIEID", m.getMovieId());
                     ((Callback) getActivity())
-                            .onItemSelected(m.getMovieId());
+                            .onItemSelected(Long.parseLong(m.getMovieId()));
                 }
                 mPosition = position;
             }
@@ -90,37 +90,37 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // This is called when a new Loader needs to be created.  This
-        // fragment only uses one loader, so we don't care about checking the id.
-
-
-        // Sort order:  //// TODO: 9/18/2016 get user prefs
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortOrder = prefs.getString(
-                getActivity().getString(R.string.pref_sort_order_key),
-                getActivity().getString(R.string.pref_sort_order_default_value)) + " ASC";
-
-        Uri movieUri = MovieContract.MovieEntry.buildMoviesUri();
-
-        return new CursorLoader(getActivity(),
-                movieUri,
-                MOVIEGRID_COLUMNS,
-                null,
-                null,
-                sortOrder);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        // This is called when a new Loader needs to be created.  This
+//        // fragment only uses one loader, so we don't care about checking the id.
+//
+//
+//        // Sort order:  //// TODO: 9/18/2016 get user prefs
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        String sortOrder = prefs.getString(
+//                getActivity().getString(R.string.pref_sort_order_key),
+//                getActivity().getString(R.string.pref_sort_order_default_value)) + " ASC";
+//
+//        Uri movieUri = MovieContract.MovieEntry.buildMoviesUri();
+//
+//        return new CursorLoader(getActivity(),
+//                movieUri,
+//                MOVIEGRID_COLUMNS,
+//                null,
+//                null,
+//                sortOrder);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//
+//    }
 
     /**
      * A callback interface that all activities containing this fragment must

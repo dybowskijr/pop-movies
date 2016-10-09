@@ -15,7 +15,6 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements MainActivityFragment.Callback, DetailFragment.OnFragmentInteractionListener {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
-    String tmp = BuildConfig.THE_MOVIE_DB_API_KEY;
     private boolean mTwoPane;
 
     @Override

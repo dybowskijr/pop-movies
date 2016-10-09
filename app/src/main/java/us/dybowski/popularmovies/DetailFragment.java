@@ -14,11 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import us.dybowski.popularmovies.data.DataUtilities;
 
 
 /**
@@ -33,6 +36,7 @@ public class DetailFragment extends Fragment {
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     private long mMovieId = 0;
+    public String mPosterPath;
 
     public TextView mTitleTextView;
     public ImageView mPosterImageView;
@@ -52,7 +56,6 @@ public class DetailFragment extends Fragment {
     public DetailFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,11 +102,24 @@ public class DetailFragment extends Fragment {
                 if (true) {
                     Movie m = (Movie)adapterView.getItemAtPosition(position);
                     Log.i("POSITION", Integer.toString(position));
-                    Log.i("MOVIEID", Long.toString(m.getMovieId()));
+                    Log.i("MOVIEID", m.getMovieId());
                     ((MainActivityFragment.Callback) getActivity())
-                            .onItemSelected(m.getMovieId());
+                            .onItemSelected(Long.parseLong(m.getMovieId()));
                 }
 
+            }
+        });
+
+        mFavoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    Movie m = new Movie(Long.toString(mMovieId), mPosterPath);
+                    DataUtilities.insertFavorite(m, getActivity());
+                }
+                else {
+                    DataUtilities.deleteFavorite(Long.toString(mMovieId), getActivity());
+                }
             }
         });
         return rootView;
