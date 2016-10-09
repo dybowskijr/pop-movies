@@ -1,0 +1,7 @@
+#Sun Oct 09 13:34:36 CDT 2016
+base.0=C\:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_ef826857aa6d0899c95e65ce9c6ca79b58ab8038
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=C\:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_da045e83104e69df0a9edf70363447e9db8d912d\\classes.dex
+base.1=C\:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_da045e83104e69df0a9edf70363447e9db8d912d
+file.0=C\:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_ef826857aa6d0899c95e65ce9c6ca79b58ab8038\\classes.dex

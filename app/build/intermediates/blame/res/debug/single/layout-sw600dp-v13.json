@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_main.xml",
+        "source": "C:\\Users\\DD8312\\git\\PopularMovies\\app\\src\\main\\res\\layout-sw600dp\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\design_layout_snackbar.xml",
+        "source": "C:\\Users\\DD8312\\git\\PopularMovies\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\24.2.0\\res\\layout-sw600dp-v13\\design_layout_snackbar.xml"
+    }
+]

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="us.dybowski.popularmovies"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="24" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="us.dybowski.popularmovies.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="us.dybowski.popularmovies.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName="us.dybowski.popularmovies.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="us.dybowski.popularmovies.MainActivity" />
+        </activity>
+        <activity
+            android:name="us.dybowski.popularmovies.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="us.dybowski.popularmovies.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="us.dybowski.popularmovies.MainActivity" />
+        </activity>
+
+        <provider
+            android:name="us.dybowski.popularmovies.data.MovieProvider"
+            android:authorities="us.dybowski.popularmovies" />
+    </application>
+
+</manifest>
