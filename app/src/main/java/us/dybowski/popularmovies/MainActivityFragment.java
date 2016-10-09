@@ -20,6 +20,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.dybowski.popularmovies.data.DataUtilities;
 import us.dybowski.popularmovies.data.MovieContract;
 
 /**
@@ -27,6 +28,7 @@ import us.dybowski.popularmovies.data.MovieContract;
  */
 public class MainActivityFragment extends Fragment {
 
+    final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     UriImageAdapter mUriImageAdapter;
     GridView movieGridView;
     private int mPosition = ListView.INVALID_POSITION;
@@ -69,7 +71,6 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                //Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (true) {
                     Movie m = (Movie)adapterView.getItemAtPosition(position);
                     Log.i("POSITION", Integer.toString(position));
@@ -80,15 +81,34 @@ public class MainActivityFragment extends Fragment {
                 mPosition = position;
             }
         });
-
         //get movie list using preference (highest_rated or most_popular
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = prefs.getString(getString(R.string.pref_sort_order_key),
                 getString(R.string.pref_sort_order_default_value));
-        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(this);
-        fetchMoviesTask.execute(sortOrder);
+        Log.i(LOG_TAG, "sortOrder: " + sortOrder);
+        if(sortOrder.equals("favorites")) {
+            mUriImageAdapter.clear();
+            mUriImageAdapter.addAll(DataUtilities.getFavorites(getActivity()));
+        }
+        else {
+            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(this);
+            fetchMoviesTask.execute(sortOrder);
+        }
+
+
         return rootView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    private void loadMovies() {
+
+        }
+
+
 
 //    @Override
 //    public Loader<Cursor> onCreateLoader(int id, Bundle args) {

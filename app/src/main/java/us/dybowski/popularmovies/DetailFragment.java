@@ -93,6 +93,7 @@ public class DetailFragment extends Fragment {
         mOverview = (TextView)rootView.findViewById(R.id.overview_textview);
         mFavoriteCheckBox = (CheckBox)rootView.findViewById(R.id.checkbox_favorite);
         mFavoriteCheckBox.setVisibility(View.VISIBLE);
+        mFavoriteCheckBox.setChecked(DataUtilities.isFavorite(Long.toString(mMovieId), getActivity()));
 
         mTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

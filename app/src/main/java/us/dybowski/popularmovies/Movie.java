@@ -13,7 +13,7 @@ public class Movie {
     private String overview;
     private long _id;
 
-    Movie(String movieId, String posterPath) {
+    public Movie(String movieId, String posterPath) {
         setMovieId(movieId);
         setPosterPath(posterPath);
 
