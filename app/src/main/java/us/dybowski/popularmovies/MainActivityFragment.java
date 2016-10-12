@@ -86,27 +86,18 @@ public class MainActivityFragment extends Fragment {
         String sortOrder = prefs.getString(getString(R.string.pref_sort_order_key),
                 getString(R.string.pref_sort_order_default_value));
         Log.i(LOG_TAG, "sortOrder: " + sortOrder);
-        if(sortOrder.equals("favorites")) {
-            mUriImageAdapter.clear();
-            mUriImageAdapter.addAll(DataUtilities.getFavorites(getActivity()));
-        }
-        else {
+        //if(sortOrder.equals("favorites")) {
+        //    mUriImageAdapter.clear();
+         //   mUriImageAdapter.addAll(DataUtilities.getFavorites(getActivity()));
+      //  }
+      //  else {
             FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(this);
             fetchMoviesTask.execute(sortOrder);
-        }
+     //   }
 
 
         return rootView;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    private void loadMovies() {
-
-        }
 
 
 
