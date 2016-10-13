@@ -83,12 +83,11 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         try {
 
-            final String MDB_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
-
+            String MDB_BASE_URL = "https://api.themoviedb.org/3/movie";
+            String endPoint = (params[0].equals("highest_rated")) ? "top_rated" : "popular";
             Uri builtUri = Uri.parse(MDB_BASE_URL).buildUpon()
+                    .appendPath(endPoint)
                     .appendQueryParameter(API_KEY_KEY, API_KEY_VALUE)
-                    .appendQueryParameter(SORT_BY_KEY, params[0])
-                    .appendQueryParameter(VOTE_COUNT_KEY, VOTE_COUNT_VALUE)
                     .build();
 
             URL url = new URL(builtUri.toString());

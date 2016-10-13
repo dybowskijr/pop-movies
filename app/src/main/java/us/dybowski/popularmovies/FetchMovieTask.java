@@ -151,6 +151,7 @@ public class FetchMovieTask extends AsyncTask<Long, Void, Movie> {
             mDetailFragment.mReleaseYearTextView.setText(movie.getReleaseDate());
             mDetailFragment.mTitleTextView.setText(movie.getTitle());
             mDetailFragment.mOverview.setText(movie.getOverview());
+            mDetailFragment.mPosterPath = movie.getPosterPath();
 
             Uri imageUri = Uri.parse(BuildConfig.THE_MOVIE_DB_IMAGE_BASE_PATH).buildUpon().appendEncodedPath(movie.getPosterPath()).build();
             Picasso.with(mDetailFragment.getContext()).load(imageUri).into(mDetailFragment.mPosterImageView);

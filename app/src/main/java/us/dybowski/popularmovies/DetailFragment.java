@@ -1,6 +1,8 @@
 package us.dybowski.popularmovies;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,15 +101,18 @@ public class DetailFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Trailer t = (Trailer)adapterView.getItemAtPosition(position);
 
-                if (true) {
-                    Movie m = (Movie)adapterView.getItemAtPosition(position);
-                    Log.i("POSITION", Integer.toString(position));
-                    Log.i("MOVIEID", m.getMovieId());
-                    ((MainActivityFragment.Callback) getActivity())
-                            .onItemSelected(Long.parseLong(m.getMovieId()));
-                }
-
+                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + t.getKey()));
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + t.getKey()));
+                    try {
+                        startActivity(appIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        startActivity(webIntent);
+                    } catch (IllegalArgumentException ex) {
+                        startActivity(webIntent);
+                    }
             }
         });
 
