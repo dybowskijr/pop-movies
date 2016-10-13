@@ -31,9 +31,8 @@ public class MainActivityFragment extends Fragment {
     final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     UriImageAdapter mUriImageAdapter;
     GridView movieGridView;
+    String mSortOrder;
     private int mPosition = ListView.INVALID_POSITION;
-
-    private static List<Movie> dummyList = new ArrayList<>();
 
     public MainActivityFragment() {
     }
@@ -60,10 +59,10 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mUriImageAdapter = new UriImageAdapter(getActivity(), dummyList, "http://image.tmdb.org/t/p/w342/");
+        mUriImageAdapter = new UriImageAdapter(getActivity(), new ArrayList<Movie>(), "http://image.tmdb.org/t/p/w342/");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        movieGridView = (GridView)rootView.findViewById(R.id.gridview);
+        movieGridView = (GridView) rootView.findViewById(R.id.gridview);
         movieGridView.setAdapter(mUriImageAdapter);
 
         movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,7 +71,7 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                 if (true) {
-                    Movie m = (Movie)adapterView.getItemAtPosition(position);
+                    Movie m = (Movie) adapterView.getItemAtPosition(position);
                     Log.i("POSITION", Integer.toString(position));
                     Log.i("MOVIEID", m.getMovieId());
                     ((Callback) getActivity())
@@ -81,63 +80,55 @@ public class MainActivityFragment extends Fragment {
                 mPosition = position;
             }
         });
-        //get movie list using preference (highest_rated or most_popular
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortOrder = prefs.getString(getString(R.string.pref_sort_order_key),
+        mSortOrder = PreferenceManager.getDefaultSharedPreferences(
+                getActivity()).getString(getString(R.string.pref_sort_order_key),
                 getString(R.string.pref_sort_order_default_value));
-        Log.i(LOG_TAG, "sortOrder: " + sortOrder);
-        //if(sortOrder.equals("favorites")) {
-        //    mUriImageAdapter.clear();
-         //   mUriImageAdapter.addAll(DataUtilities.getFavorites(getActivity()));
-      //  }
-      //  else {
-            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(this);
-            fetchMoviesTask.execute(sortOrder);
-     //   }
 
-
+        refresh(mSortOrder);
         return rootView;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSortOrder = PreferenceManager.getDefaultSharedPreferences(
+                getActivity()).getString(getString(R.string.pref_sort_order_key),
+                getString(R.string.pref_sort_order_default_value));
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        String sortOrder = PreferenceManager.getDefaultSharedPreferences(
+                getActivity()).getString(getString(R.string.pref_sort_order_key),
+                getString(R.string.pref_sort_order_default_value));
+        if (!sortOrder.equals(mSortOrder)) {
+            mSortOrder = sortOrder;
+            refresh(mSortOrder);
+        }
+    }
 
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        // This is called when a new Loader needs to be created.  This
-//        // fragment only uses one loader, so we don't care about checking the id.
-//
-//
-//        // Sort order:  //// TODO: 9/18/2016 get user prefs
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String sortOrder = prefs.getString(
-//                getActivity().getString(R.string.pref_sort_order_key),
-//                getActivity().getString(R.string.pref_sort_order_default_value)) + " ASC";
-//
-//        Uri movieUri = MovieContract.MovieEntry.buildMoviesUri();
-//
-//        return new CursorLoader(getActivity(),
-//                movieUri,
-//                MOVIEGRID_COLUMNS,
-//                null,
-//                null,
-//                sortOrder);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//
-//    }
+    private void refresh(String sortOrder) {
+        Log.i(LOG_TAG, "sortOrder: " + sortOrder);
+        if(sortOrder.equals("favorites")) {
+            mUriImageAdapter.clear();
+            mUriImageAdapter.addAll(DataUtilities.getFavorites(getActivity()));
+        }
+        else {
+            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(this);
+            fetchMoviesTask.execute(sortOrder);
+        }
 
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String sortOrder = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(getString(R.string.pref_sort_order_key),
+                getString(R.string.pref_sort_order_default_value));
+        outState.putString("ORDER", sortOrder);
+    }
+
     public interface Callback {
         /**
          * DetailFragmentCallback for when an item has been selected.

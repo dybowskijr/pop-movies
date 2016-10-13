@@ -9,12 +9,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/review_text_view"
         android:textSize="10sp"
+        android:layout_marginRight="4dp"
         android:textAlignment="center" />
 
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:id="@+id/reviewer_text_view"
         android:textAlignment="textEnd" />
 </LinearLayout>

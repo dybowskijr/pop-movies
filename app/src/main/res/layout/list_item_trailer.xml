@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/trailer_text_view"
         android:textSize="14sp"
+        android:layout_marginRight="4dp"
         android:gravity="center"
         android:textStyle="bold"
         android:layout_weight="1"/>

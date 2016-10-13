@@ -10,10 +10,12 @@ import us.dybowski.popularmovies.Movie;
 
 public class DataUtilities {
     public static long insertFavorite(Movie m, Context c) {
+        deleteFavorite(m.getMovieId(), c);
         MovieDbHelper movieDbHelper = new MovieDbHelper(c);
         ContentValues cv = new ContentValues();
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, m.getMovieId());
         cv.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, true);
+        cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, m.getPosterPath());
         return movieDbHelper.getWritableDatabase().insert(MovieContract.MovieEntry.TABLE_NAME, "", cv);
 
     }
@@ -47,7 +49,7 @@ public class DataUtilities {
         if(cursor.moveToFirst()) {
             do {
                 movieList.add(new Movie(cursor.getString(0), cursor.getString(1)));
-            } while(!cursor.isLast());
+            } while(cursor.moveToNext());
         }
         cursor.close();
         return movieList;
